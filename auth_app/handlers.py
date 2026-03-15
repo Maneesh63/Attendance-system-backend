@@ -61,6 +61,7 @@ class LoginHandler:
 
     @classmethod
     def login_user(cls, request):
+        print("Login request data:", request.data)
         email = request.data.get("email")
         password = request.data.get("password")
 
@@ -73,6 +74,7 @@ class LoginHandler:
         try:
             try:
                 user = User.objects.get(email=email)
+                print("user found:", user)
             except User.DoesNotExist:
                 return {"error": "Invalid credentials"}
 

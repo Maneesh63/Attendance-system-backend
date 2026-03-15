@@ -48,9 +48,10 @@ class BlacklistedToken(models.Model):
         return self.jti
     
 class UserQR(models.Model):
-
+    # id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     qr_token = models.TextField(unique=True)
     qr_image = models.ImageField(upload_to="user_qr/", null=True, blank=True)
+    # qr_code_url = models.URLField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
