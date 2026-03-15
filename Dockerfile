@@ -2,7 +2,7 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
-# Install OS dependencies for Django + mysqlclient
+# Install OS dependencies needed for mysqlclient
 RUN apt-get update && apt-get install -y \
     netcat-openbsd \
     default-mysql-client \
@@ -23,5 +23,5 @@ COPY . .
 
 EXPOSE 8000
 
-# Default command (can override on Render)
+# Start command for Render
 CMD ["gunicorn", "root.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "1"]
