@@ -24,4 +24,4 @@ COPY . .
 EXPOSE 8000
 
 # Default command (can override on Render)
-CMD ["gunicorn", "myproject.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "1"]
+CMD ["gunicorn", "root.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "1"]
