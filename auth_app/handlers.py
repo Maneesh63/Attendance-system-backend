@@ -16,6 +16,7 @@ class RegisterHandler:
         email = request.data.get("email")
         phone = request.data.get("phone", "")
         password = request.data.get("password")
+        role = request.data.get("role", "student")
 
         if not email:
             return {"error": "Email required"}
@@ -32,7 +33,9 @@ class RegisterHandler:
                     user = User(
                         username=username or email,
                         email=email,
-                        password=hash_password(password)
+                        password=hash_password(password),
+                        phone=phone,
+                        role=role
                     )
 
                     # user.set_password(password)    
