@@ -5,8 +5,9 @@ from auth_app.models import UserQR
 from attendance.models import AttendanceRecord
 from django.utils import timezone
 from auth_app.jwt_handler import decode_jwt
-# from erp.utils import S3Handler
+from erp.utils import S3Handler
 import traceback
+from io import BytesIO
 
 baseurl = "http://127.0.0.1:8000"
 
@@ -28,31 +29,31 @@ class AttendanceHandler:
                 qr_token=token,
                 qr_image=image
             )
-            image_url = baseurl + user_qr.qr_image.url
-
-            # try:
-                
-            #     image_bytes = image.getvalue()
-            #     print("PDF byte size:", len(image_bytes))
             
-            #     file_name = f"invoices/{user_qr['id']}"
-            #     file_options = {"content-type": "application/pdf"}
-            #     public_url = S3Handler.upload_file_to_s3(
-            #         bucket="??",
-            #         file_bytes=image_bytes,
-            #         file_path=file_name,
-            #         file_options=file_options
-            #     )
-            return {
-                    "message": "QR code created successfully",
-                    "qr_token": user_qr.qr_token,
-                    "qr_image_url": image_url,
-                    # "sb__qr_image_url": public_url
-                }
+            image_url = baseurl + user_qr.qr_image.url
+            print("Generated QR code image URL 1st:", image_url)
+            try:
+                 
+                image.seek(0)   
+                image_bytes = image.read() 
+                file_name = f"qr_images/{user_qr.id}.png"
+                print("Uploading file to S3 with name:", file_name)
+                file_options = {"content-type": "image/png"}
+                public_url = S3Handler.upload_file_to_s3(
+                    file_bytes=image_bytes,
+                    file_path=file_name,
+                    file_options=file_options
+                )
+                return {
+                        "message": "QR code created successfully",
+                        "qr_token": user_qr.qr_token,
+                        "qr_image_url": image_url,
+                        "sb__qr_image_url": public_url
+                    }
 
-            # except Exception as e:
-            #     traceback.print_exc()
-            #     return {"error": "Failed to process invoice."}
+            except Exception as e:
+                traceback.print_exc()
+                return {"error": "Failed to generate QR code image."}
                 
         except Exception as e:
             return {"error": "Failed to create QR code"}

@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 import os
 from pathlib import Path
-# from supabase import create_client
+from supabase import create_client
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -150,26 +150,23 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 
 
-# SUPABASE_URL = os.environ.get("SUPABASE_URL")
-# SUPABASE_SERVICE_ROLE_KEY = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
-
-# SUPABASE_S3_STORAGE = create_client(
-#     supabase_url=SUPABASE_URL,
-#     supabase_key=SUPABASE_SERVICE_ROLE_KEY
-# )
-
-#DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'postgres',
-#         'USER': 'postgres.cqvtaznphpjnhvuionfm',
-#         'PASSWORD': 'BezNX7UZ1WfldWj1',
-#         'HOST': 'aws-0-ap-south-1.pooler.supabase.com',
-#         'PORT': '6543',
-#         'OPTIONS': {
-#             'sslmode': 'require',
-             
-#         },
-#     }
-
-# }
+SUPABASE_URL = os.environ.get("SUPABASE_URL")
+SUPABASE_SERVICE_ROLE_KEY = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
+print("SUPABASE_URL:", SUPABASE_URL)
+SUPABASE_S3_STORAGE = create_client(
+    supabase_url="https://rfqqcaybhklrrwwkzhat.supabase.co",
+    supabase_key="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJmcXFjYXliaGtscnJ3d2t6aGF0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1NTk4NzMsImV4cCI6MjA4OTEzNTg3M30.LPOnbiSs74-mJ6DC4wsKjQogxN49LSJcnIWntH-OOPk"
+)
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "postgres",
+        "USER": "postgres.rfqqcaybhklrrwwkzhat",
+        "PASSWORD": "ermats@632765",
+        "HOST": "aws-1-ap-northeast-1.pooler.supabase.com",
+        "PORT": "6543",
+        "OPTIONS": {
+            "sslmode": "require"
+        }
+    }
+}
