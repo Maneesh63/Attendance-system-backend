@@ -1,11 +1,12 @@
 
-from auth_app.models import User, BlacklistedToken
+from auth_app.models import User, BlacklistedToken, UserQR
 import traceback
 from auth_app.jwt_handler import generate_jwt
 from django.db import IntegrityError
 from django.db import transaction
 from auth_app.utils import hash_password, verify_password
 from auth_app.jwt_handler import decode_jwt
+
 
 
 class RegisterHandler:
@@ -121,6 +122,10 @@ class PersonalDashboardHandler:
         user_id = user.user_id
         print("user_id", user_id)
         print("request user:", user)
+
+        user_qr = UserQR.objects.filter(user__user_id=user_id, is_active=True).first()
+        if user_qr:
+            print("User QR found:", user_qr.qr_code_url)
         try:
             print("user in handler:", user)
             data = {
@@ -128,6 +133,7 @@ class PersonalDashboardHandler:
                 "email": user.email,
                 "role": user.role,
                 "username": user.username,
+                "qr_code_url": user_qr.qr_code_url if user_qr else None
             }
             return data
         except Exception as e:

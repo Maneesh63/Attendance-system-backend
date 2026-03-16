@@ -8,6 +8,7 @@ from auth_app.jwt_handler import decode_jwt
 from erp.utils import S3Handler
 import traceback
 from io import BytesIO
+from auth_app.models import UserQR
 
 baseurl = "http://127.0.0.1:8000"
 
@@ -44,6 +45,9 @@ class AttendanceHandler:
                     file_path=file_name,
                     file_options=file_options
                 )
+                if public_url:
+                    user_qr.qr_code_url = public_url
+                    user_qr.save()
                 return {
                         "message": "QR code created successfully",
                         "qr_token": user_qr.qr_token,
